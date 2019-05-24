@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SchoolSystem3.Models.Major>
+﻿@model SchoolSystem3.ViewModels.MajorCourseModel
 
 @{
     ViewBag.Title = "Index";
@@ -6,26 +6,72 @@
 
 <h2>Index</h2>
 
+
 <table class="table">
     <tr>
         <th>
-            Dean </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
+            Major Name
         </th>
+        <th>
+            Name Of Dean
+        </th>
+
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Teacher.FirstName)
-        </td>
+    @foreach (var item in Model.Majors)
+    {
+        string selectedRow = "";
+        if (item.MajorID == ViewBag.MajorID)
+        {
+            selectedRow = "success";
+        }
+    <tr class="@selectedRow">
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
-        
+        <td>
+            @Html.DisplayFor(modelItem => item.Teacher.FullName)
+        </td>
+
+        <td>
+            @Html.ActionLink("Show Courses", "ReadOnlyIndex", new { id = item.MajorID })
+        </td>
     </tr>
-}
+    }
 
 </table>
+
+@if (Model.Courses != null)
+{
+    <h3>Courses Of Majors</h3>
+    <table class="table">
+        <tr>
+            <th>Course ID</th>
+            <th>Title</th>
+            <th>Major</th>
+        </tr>
+
+        @foreach (var item in Model.Courses)
+        {
+            string selectedRow = "";
+            if (item.CourseID == ViewBag.CourseID)
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+              
+                <td>
+                    @item.CourseID
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Majors.Name
+                </td>
+            </tr>
+        }
+
+    </table>
+}

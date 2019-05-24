@@ -20,6 +20,11 @@ namespace SchoolSystem3.Controllers
             var courses = db.Courses.Include(c => c.Majors);
             return View(courses.ToList());
         }
+        public ActionResult ReadOnlyIndex()
+        {
+            var courses2 = db.Courses.Include(c => c.Majors);
+            return View(courses2.ToList());
+        }
 
         // GET: Course/Details/5
         public ActionResult Details(int? id)

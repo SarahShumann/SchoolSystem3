@@ -25,7 +25,7 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
-                    @if (User.IsInRole("CanManagePage"))
+                    @if (User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Students", "Index", "Students")</li>
                     }
@@ -35,26 +35,36 @@
 
                     }
 
-                    <li>@Html.ActionLink("Courses", "Index", "Course")</li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Courses", "Index", "Course")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Courses", "ReadOnlyIndex", "Course")</li>
+
+                    }
+
+                    
 
 
-                    @if (User.IsInRole("CanManagePage"))
+                    @if (User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Teacher", "Index", "Teacher")</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("Teacher", "ReadOnlyIndex", "Teacher")</li>
+                        
 
                     }
 
-                    @if (User.IsInRole("CanManagePage"))
+                    @if (User.IsInRole("Admin"))
                     {
-                        <li>@Html.ActionLink("Major", "Index", "Major")</li>
+                        <li>@Html.ActionLink("Majors", "Index", "Major")</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("Major", "ReadOnlyIndex", "Major")</li>
+                        <li>@Html.ActionLink("Majors", "ReadOnlyIndex", "Major")</li>
 
                     }
                 </ul>

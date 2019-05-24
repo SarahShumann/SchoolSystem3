@@ -172,8 +172,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MajorController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -246,6 +248,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\EnrollStudentCourse.cs" />
+    <Compile Include="ViewModels\MajorCourseModel.cs" />
     <Compile Include="ViewModels\TeacherModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -326,6 +329,9 @@
     <Content Include="Views\Major\Index.cshtml" />
     <Content Include="Views\Major\ReadOnlyIndex.cshtml" />
     <Content Include="Views\Students\ReadOnlyIndex.cshtml" />
+    <Content Include="Views\Course\ReadOnlyIndex.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

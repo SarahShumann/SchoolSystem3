@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SchoolSystem3.Models;
+using SchoolSystem3.ViewModels;
 
 namespace SchoolSystem3.Controllers
 {
@@ -16,24 +17,65 @@ namespace SchoolSystem3.Controllers
 
         // GET: Major
         //[Authorize(Roles ="CanManagePage")]
-        public ActionResult Index()
+        public ActionResult Index(int? id, int? courseID)
         {
-            
-            //if (User.IsInRole("CanManagePage"))
-           // {
-                var majors = db.Majors.Include(m => m.Teacher);
-                return View(majors.ToList());
-           // }
-           // else
-              //  return View("ReadOnlyIndex");
+            // var majors = db.Majors.Include(m => m.Teacher);
+            //return View(majors.ToList());
 
-            
+            var viewModel = new MajorCourseModel();
+            viewModel.Majors = db.Majors
+                .Include(i => i.Teacher)
+                .Include(i => i.Courses.Select(c => c.Majors))
+                .OrderBy(i => i.MajorID);
+
+            if (id != null)
+            {
+                ViewBag.MajorID = id.Value;
+                viewModel.Courses = viewModel.Majors.Where(
+                    i => i.MajorID == id.Value).Single().Courses;
+            }
+            if (courseID != null)
+            {
+                ViewBag.CourseID = courseID.Value;
+                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
+                db.Entry(selectedCourse).Collection(x => x.Enrollments).Load();
+                foreach (Enrollment enrollment in selectedCourse.Enrollments)
+                {
+                    db.Entry(enrollment).Reference(x => x.Student).Load();
+                }
+
+                viewModel.Enrollments = selectedCourse.Enrollments;
+            }
+
+
+
+            return View(viewModel);
         }
-        public ActionResult ReadOnlyIndex()
+
+        public ActionResult ReadOnlyIndex(int? id, int? courseID)
         {
-            var majors1 = db.Majors.Include(m => m.Teacher);
-            return View(majors1.ToList());
+            // var majors = db.Majors.Include(m => m.Teacher);
+            //return View(majors.ToList());
+
+            var viewModel = new MajorCourseModel();
+            viewModel.Majors = db.Majors
+                .Include(i => i.Teacher)
+                .Include(i => i.Courses.Select(c => c.Majors))
+                .OrderBy(i => i.MajorID);
+
+            if (id != null)
+            {
+                ViewBag.MajorID = id.Value;
+                viewModel.Courses = viewModel.Majors.Where(
+                    i => i.MajorID == id.Value).Single().Courses;
+            }
+
+
+
+            return View(viewModel);
         }
+
+
 
 
         // GET: Major/Details/5
@@ -72,7 +114,7 @@ namespace SchoolSystem3.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TeacherID = new SelectList(db.Teachers, "TeacherID", "FirstName", major.TeacherID);
+                ViewBag.TeacherID = new SelectList(db.Teachers, "TeacherID", "FirstName", major.TeacherID);
             return View(major);
         }
 
